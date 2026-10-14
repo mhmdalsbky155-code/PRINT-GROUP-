@@ -18,7 +18,6 @@
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
-            /* تم السماح بالسحب الرأسي */
             overflow-y: auto; 
         }
 
@@ -33,6 +32,7 @@
             position: relative;
             min-height: 450px;
             margin: 20px 0;
+            overflow: hidden; 
         }
 
         /* Typewriter Effect */
@@ -107,6 +107,7 @@
             color: #cbd5e1;
             position: relative;
             transition: top 0.3s ease, left 0.3s ease;
+            z-index: 5;
         }
 
         /* Success Screen */
@@ -176,12 +177,38 @@
             padding: 0 15px;
         }
 
-        .accordion-content p {
+        /* تنسيق الوصف */
+        .desc-list {
             color: #e2e8f0;
             line-height: 1.8;
             font-size: 0.95rem;
             margin: 15px 0;
-            white-space: pre-line;
+            list-style: none;
+            padding: 0;
+        }
+        .desc-list li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        .desc-list li::before {
+            content: '•';
+            color: #2dd4bf; 
+            font-weight: bold;
+            margin-left: 8px;
+            font-size: 1.2rem;
+        }
+        .desc-highlight {
+            color: #a855f7;
+            font-weight: bold;
+        }
+        .desc-extra {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin-top: 15px;
+            border-top: 1px solid #475569;
+            padding-top: 15px;
+            line-height: 2;
         }
 
         .links-container {
@@ -249,15 +276,15 @@
             
             <div class="buttons">
                 <button class="btn-yes" onclick="showSuccess()">أكيد</button>
-                <button class="btn-no" id="noBtn">هفكر</button>
+                <button class="btn-no" id="noBtn" onclick="moveButton(event)">هفكر</button>
             </div>
         </div>
 
         <!-- صفحة النجاح (الجروبات والوصف) -->
         <div class="success-screen" id="successScreen">
-            <!-- تم إضافة الفيديو هنا -->
-            <video class="success-video" autoplay loop muted playsinline>
-                <source src="dance.mp4" type="video/mp4">
+            <!-- تم تعديل اسم الفيديو هنا ليطابق الاسم الموجود عندك بالظبط -->
+            <video class="success-video" autoplay loop muted playsinline webkit-playsinline>
+                <source src="dance.MP4.MP4" type="video/mp4">
             </video>
             
             <h2>أحلى قرار أخدته النهاردة!</h2>
@@ -265,17 +292,22 @@
             <div class="desc-accordion">
                 <button class="accordion-btn" onclick="toggleAccordion()">الوصف 📋</button>
                 <div class="accordion-content" id="descContent">
-                    <p>متاح:
-                    • طباعة أوراق
-                    • طباعة محاضرات وسكاشن
-                    • طباعة كُتب
-                    (طباعة المحاضرات عادية أو تكعيب)
-                    
-                    ✨ مع توفر خصم في حالة طباعة كمية كتب أو مذكرات.
-                    
-                    ✅ جودة عالية وسعر مناسب.
-                    ⏳ استلام الطلبات حتى الساعة 12 مساءً.
-                    📍 والاستلام تاني يوم أمام الجامعة 💜</p>
+                    <div class="desc-list">
+                        <div style="font-weight: bold; margin-bottom: 10px; color: white;">متاح:</div>
+                        <ul>
+                            <li>طباعة أوراق</li>
+                            <li>طباعة محاضرات وسكاشن</li>
+                            <li>طباعة كُتب</li>
+                        </ul>
+                        <div style="font-size: 0.9em; color: #94a3b8; margin-bottom: 10px;">(طباعة المحاضرات عادية أو تكعيب)</div>
+                        
+                        <div class="desc-extra">
+                            ✨ مع توفر خصم في حالة طباعة كمية كتب أو مذكرات.<br><br>
+                            ✅ <span class="desc-highlight">جودة عالية وسعر مناسب.</span><br>
+                            ⏳ استلام الطلبات حتى الساعة 12 مساءً.<br>
+                            📍 والاستلام تاني يوم أمام الجامعة 💜
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -300,16 +332,14 @@
         const noBtn = document.getElementById('noBtn');
         const container = document.getElementById('mainContainer');
 
-        noBtn.addEventListener('mouseover', moveButton);
-        noBtn.addEventListener('touchstart', moveButton); // للموبايل
-
-        function moveButton() {
+        function moveButton(e) {
+            if(e) e.preventDefault(); 
+            
             noBtn.style.position = 'absolute';
             
             const containerRect = container.getBoundingClientRect();
             const btnRect = noBtn.getBoundingClientRect();
             
-            // منطقة آمنة لمنع الزرار من الخروج
             const safePadding = 25; 
             
             const maxX = containerRect.width - btnRect.width - safePadding;
@@ -322,6 +352,10 @@
             noBtn.style.top = randomY + 'px';
         }
 
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', moveButton, {passive: false});
+        noBtn.addEventListener('click', moveButton);
+
         function showSuccess() {
             document.getElementById('questionScreen').style.display = 'none';
             document.getElementById('successScreen').style.display = 'flex';
@@ -332,7 +366,7 @@
             if (content.style.maxHeight) {
                 content.style.maxHeight = null;
             } else {
-                content.style.maxHeight = content.scrollHeight + "px";
+                content.style.maxHeight = (content.scrollHeight + 50) + "px";
             }
         }
     </script>
