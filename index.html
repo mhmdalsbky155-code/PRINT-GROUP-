@@ -35,7 +35,6 @@
             overflow: hidden; 
         }
 
-        /* Typewriter Effect */
         .typewriter-container {
             margin-bottom: 30px;
             min-height: 80px;
@@ -110,7 +109,6 @@
             z-index: 5;
         }
 
-        /* Success Screen */
         .success-screen {
             display: none;
             flex-direction: column;
@@ -123,7 +121,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Video Styling */
         .success-video {
             width: 200px;
             height: 200px;
@@ -140,7 +137,6 @@
             font-size: 1.6rem;
         }
 
-        /* Accordion Description */
         .desc-accordion {
             width: 100%;
             margin-bottom: 20px;
@@ -177,7 +173,6 @@
             padding: 0 15px;
         }
 
-        /* تنسيق الوصف */
         .desc-list {
             color: #e2e8f0;
             line-height: 1.8;
@@ -267,7 +262,6 @@
 <body>
 
     <div class="container" id="mainContainer">
-        <!-- السؤال الأول -->
         <div id="questionScreen">
             <div class="typewriter-container">
                 <div class="typewriter">مكتبة طيف</div>
@@ -280,11 +274,10 @@
             </div>
         </div>
 
-        <!-- صفحة النجاح (الجروبات والوصف) -->
         <div class="success-screen" id="successScreen">
-            <!-- تم تعديل اسم الفيديو هنا ليطابق الاسم الموجود عندك بالظبط -->
+            <!-- تم ضبط مسار الفيديو ليطابق اسم dance.mp4.mp4 اللي رفعته -->
             <video class="success-video" autoplay loop muted playsinline webkit-playsinline>
-                <source src="dance.MP4.MP4" type="video/mp4">
+                <source src="dance.mp4.mp4" type="video/mp4">
             </video>
             
             <h2>أحلى قرار أخدته النهاردة!</h2>
@@ -334,20 +327,14 @@
 
         function moveButton(e) {
             if(e) e.preventDefault(); 
-            
             noBtn.style.position = 'absolute';
-            
             const containerRect = container.getBoundingClientRect();
             const btnRect = noBtn.getBoundingClientRect();
-            
             const safePadding = 25; 
-            
             const maxX = containerRect.width - btnRect.width - safePadding;
             const maxY = containerRect.height - btnRect.height - safePadding;
-
             const randomX = Math.max(safePadding, Math.floor(Math.random() * maxX));
             const randomY = Math.max(safePadding, Math.floor(Math.random() * maxY));
-
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
         }
