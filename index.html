@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مكتبة طيف</title>
+    <!-- تضمين مكتبة Tailwind CSS للتصميم -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- تضمين خط Cairo من جوجل -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -38,6 +40,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow: hidden; /* لمنع الزرار من الخروج برا المربع */
         }
 
         .typewriter-container {
@@ -128,6 +131,7 @@
             background: #334155;
             color: #cbd5e1;
             z-index: 30; 
+            transition: all 0.2s ease-out; /* لتنعيم حركة الهروب */
         }
 
         #success-page {
@@ -184,9 +188,40 @@
             transform: translateX(-5px); 
         }
 
+        .contact-link:hover {
+            background-color: #8b5cf6; 
+            border-color: #8b5cf6;
+        }
+
         .show-element {
             opacity: 1 !important;
             transform: translateY(0) !important;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem 1rem;
+                width: 95%;
+            }
+            .typewriter-text {
+                font-size: 2.5rem; 
+            }
+            .typewriter-sub {
+                font-size: 1.2rem;
+                letter-spacing: 3px;
+            }
+            .question-text {
+                font-size: 1.2rem;
+            }
+            button {
+                min-width: 100px;
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+            .channel-link {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
         }
     </style>
 </head>
@@ -194,26 +229,54 @@
 
     <div class="container" id="main-container">
         
-        <!-- Question View -->
+        <!-- صفحة السؤال الأولى -->
         <div id="question-page" class="w-full flex flex-col items-center">
             
-            <!-- Typewriter Area -->
             <div class="typewriter-container">
                 <div class="typewriter-text" id="typing-text"></div>
                 <div class="typewriter-sub" id="typing-sub">TAIF</div>
             </div>
             
-            <p class="question-text" id="main-question">جاهز تطبع معانا وتوفر فلوسك؟ 😉</p>
+            <p class="question-text" id="main-question">جاهز تطبع معانا؟ 😉</p>
             
             <div class="buttons-container" id="btns-container">
                 <button id="yes-btn">أكيد</button>
-                <button id="no-btn">مفلس حالياً</button>
+                <button id="no-btn">هفكر</button>
             </div>
         </div>
 
+        <!-- صفحة النجاح واللينكات -->
         <div id="success-page">
             <img src="https://media.giphy.com/media/l41lUjUgLLwWrz20w/giphy.gif" alt="Success" class="success-image">
             <h2 class="text-2xl font-bold text-white mb-2">أحلى قرار أخدته النهاردة!</h2>
+            
+            <!-- زرار الوصف (Accordion) -->
+            <div class="w-full mb-4 mt-2">
+                <button id="desc-btn" class="w-full flex justify-between items-center bg-slate-800 text-white p-3 rounded-xl border border-slate-600 hover:bg-slate-700 transition-colors shadow-sm">
+                    <span class="font-bold text-md text-purple-300">الوصف 📋</span>
+                    <svg id="desc-icon" class="w-5 h-5 transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="desc-content" class="hidden bg-slate-800/80 mt-2 p-4 rounded-xl border border-slate-700 text-sm text-right text-gray-200 leading-relaxed shadow-inner">
+                    <p class="text-purple-400 font-bold mb-2 text-lg">متاح:</p>
+                    <ul class="list-none space-y-1 mb-1 pr-2">
+                        <li>✅ [طباعة اوراق]</li>
+                        <li>✅ [طباعة محاضرات وسكاشن]</li>
+                        <li>✅ [طباعة كُتب]</li>
+                    </ul>
+                    <p class="text-gray-400 text-xs mb-3">(طباعة المحاضرات عاديه او تكعيب)</p>
+                    
+                    <div class="h-px bg-slate-700 w-full my-3"></div>
+                    
+                    <p class="text-green-400 font-bold mb-1">💸 مع توفر جمله في حاله طباعه كميه كتب او مذكرات</p>
+                    <p class="mb-4">✨ جوده عاليه وسعر مناسب</p>
+                    
+                    <div class="bg-purple-900/40 p-3 rounded-lg border border-purple-500/30 text-center">
+                        <p class="font-bold text-white mb-1">⏰ استلام الطلبات حتى الساعة 12 مساءً</p>
+                        <p class="font-bold text-purple-200">📍 والاستلام تاني يوم أمام الجامعة 💜</p>
+                    </div>
+                </div>
+            </div>
+
             <p class="text-gray-400 mb-4 text-sm font-bold">انضم للجروب المناسب ليك:</p>
             
             <div class="links-container">
@@ -235,6 +298,15 @@
                     </svg>
                     الجروب العام (لباقي التخصصات والمستويات)
                 </a>
+                
+                <div class="h-px bg-slate-700/50 w-full my-1"></div>
+                
+                <a href="https://wa.me/201006006560" target="_blank" class="channel-link contact-link" style="border-color: rgba(139, 92, 246, 0.4);">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                    </svg>
+                    للتواصل: 01006006560
+                </a>
             </div>
         </div>
 
@@ -250,6 +322,10 @@
         const typingSub = document.getElementById('typing-sub');
         const mainQuestion = document.getElementById('main-question');
         const btnsContainer = document.getElementById('btns-container');
+
+        const descBtn = document.getElementById('desc-btn');
+        const descContent = document.getElementById('desc-content');
+        const descIcon = document.getElementById('desc-icon');
 
         const textToType = "مكتبة طيف";
         
@@ -291,13 +367,20 @@
         };
 
         function escapeMouse() {
-            noBtn.style.position = 'fixed';
+            const container = document.getElementById('main-container');
             
-            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            if (noBtn.style.position !== 'absolute') {
+                noBtn.style.width = noBtn.offsetWidth + 'px';
+                noBtn.style.height = noBtn.offsetHeight + 'px';
+                noBtn.style.position = 'absolute';
+            }
             
-            const randomX = Math.max(20, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+            const safePadding = 25;
+            const maxX = container.clientWidth - noBtn.offsetWidth - safePadding;
+            const maxY = container.clientHeight - noBtn.offsetHeight - safePadding;
+            
+            const randomX = Math.floor(Math.random() * (maxX - safePadding)) + safePadding;
+            const randomY = Math.floor(Math.random() * (maxY - safePadding)) + safePadding;
             
             noBtn.style.left = `${randomX}px`;
             noBtn.style.top = `${randomY}px`;
@@ -315,6 +398,11 @@
             successPage.style.display = 'flex';
             
             noBtn.style.display = 'none'; 
+        });
+
+        descBtn.addEventListener('click', () => {
+            descContent.classList.toggle('hidden');
+            descIcon.classList.toggle('rotate-180');
         });
 
     </script>
