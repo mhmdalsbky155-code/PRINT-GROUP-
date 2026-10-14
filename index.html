@@ -1,411 +1,340 @@
-```html
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مكتبة طيف</title>
-    <!-- تضمين مكتبة Tailwind CSS للتصميم -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- تضمين خط Cairo من جوجل -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+
         body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #0f172a; 
-            color: #f8fafc;
-            height: 100vh;
             margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Cairo', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* تم السماح بالسحب الرأسي */
+            overflow-y: auto; 
         }
 
         .container {
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 3rem 2rem;
-            border-radius: 2rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+            background-color: #1e293b;
+            padding: 40px 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
             text-align: center;
+            width: 90%;
+            max-width: 400px;
             position: relative;
-            z-index: 10;
-            max-width: 90%;
-            width: 400px;
-            min-height: 350px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* لمنع الزرار من الخروج برا المربع */
+            min-height: 450px;
+            margin: 20px 0;
         }
 
+        /* Typewriter Effect */
         .typewriter-container {
-            margin-bottom: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin-bottom: 30px;
+            min-height: 80px;
         }
 
-        .typewriter-text {
-            font-size: 3.5rem;
+        .typewriter {
+            font-size: 2.5rem;
             font-weight: 900;
-            color: #9333ea; 
-            text-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
-            white-space: nowrap;
+            color: #a855f7;
             overflow: hidden;
-            border-left: 4px solid #9333ea; 
+            border-left: .15em solid #a855f7;
+            white-space: nowrap;
             margin: 0 auto;
+            letter-spacing: .10em;
+            animation: 
+                typing 1.5s steps(30, end),
+                blink-caret .75s step-end infinite;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
-        .typewriter-sub {
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #a855f7; }
+        }
+
+        h1 {
             font-size: 1.8rem;
-            color: #d8b4fe;
-            font-weight: 700;
-            letter-spacing: 5px;
-            margin-top: 0.5rem;
-            opacity: 0;
-            transition: opacity 0.5s ease-in;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+            color: #f1f5f9;
         }
 
-        .question-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .buttons-container {
+        .buttons {
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 1.5rem;
-            width: 100%;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
+            gap: 20px;
             position: relative;
-            min-height: 50px; 
-        }
-
-        .buttons-container.show {
-            opacity: 1;
-            pointer-events: auto;
+            height: 50px;
         }
 
         button {
             padding: 12px 30px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
             border: none;
             border-radius: 12px;
             cursor: pointer;
+            transition: all 0.2s ease;
             font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            transition: transform 0.1s, box-shadow 0.2s;
-            min-width: 120px;
         }
 
-        button:active {
-            transform: scale(0.95);
-        }
-
-        #yes-btn {
-            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); 
+        .btn-yes {
+            background-color: #a855f7;
             color: white;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
-            z-index: 20; 
+            z-index: 10;
         }
 
-        #yes-btn:hover {
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
-            transform: translateY(-2px);
+        .btn-yes:hover {
+            background-color: #9333ea;
+            transform: scale(1.05);
         }
 
-        #no-btn {
-            background: #334155;
+        .btn-no {
+            background-color: #334155;
             color: #cbd5e1;
-            z-index: 30; 
-            transition: all 0.2s ease-out; /* لتنعيم حركة الهروب */
+            position: relative;
+            transition: top 0.3s ease, left 0.3s ease;
         }
 
-        #success-page {
+        /* Success Screen */
+        .success-screen {
             display: none;
             flex-direction: column;
             align-items: center;
-            width: 100%;
             animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .success-image {
+        /* Video Styling */
+        .success-video {
             width: 200px;
             height: 200px;
-            border-radius: 50%;
             object-fit: cover;
-            margin-bottom: 1.5rem;
-            border: 4px solid #8b5cf6;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+            border-radius: 50%;
+            border: 4px solid #a855f7;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .success-screen h2 {
+            color: #f1f5f9;
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+        }
+
+        /* Accordion Description */
+        .desc-accordion {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .accordion-btn {
+            background-color: #2dd4bf;
+            color: #0f172a;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        
+        .accordion-btn:hover {
+            background-color: #14b8a6;
+            transform: scale(1.02);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background-color: #334155;
+            border-radius: 12px;
+            margin-top: 10px;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        .accordion-content p {
+            color: #e2e8f0;
+            line-height: 1.8;
+            font-size: 0.95rem;
+            margin: 15px 0;
+            white-space: pre-line;
         }
 
         .links-container {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 15px;
             width: 100%;
-            margin-top: 1rem;
         }
 
-        .channel-link {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            background-color: rgba(255, 255, 255, 0.05);
-            color: #f8fafc;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 700;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.2s;
-            text-align: center;
-        }
-
-        .channel-link:hover {
-            background-color: #25D366; 
-            border-color: #25D366;
+        .link-btn {
+            background-color: #334155;
             color: white;
-            transform: translateX(-5px); 
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            border: 1px solid #475569;
         }
 
-        .contact-link:hover {
-            background-color: #8b5cf6; 
-            border-color: #8b5cf6;
+        .link-btn:hover {
+            background-color: #22c55e;
+            border-color: #22c55e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
         }
 
-        .show-element {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
+        .whatsapp-icon {
+            font-size: 1.3rem;
+        }
+
+        .contact-btn {
+            background-color: #25D366;
+            color: white;
+            border-color: #25D366;
+            margin-top: 5px;
+        }
+
+        .contact-btn:hover {
+            background-color: #20ba56;
+            border-color: #20ba56;
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 2rem 1rem;
-                width: 95%;
-            }
-            .typewriter-text {
-                font-size: 2.5rem; 
-            }
-            .typewriter-sub {
-                font-size: 1.2rem;
-                letter-spacing: 3px;
-            }
-            .question-text {
-                font-size: 1.2rem;
-            }
-            button {
-                min-width: 100px;
-                padding: 10px 15px;
-                font-size: 1rem;
-            }
-            .channel-link {
-                font-size: 0.9rem;
-                padding: 10px;
-            }
+            h1 { font-size: 1.4rem; }
+            .typewriter { font-size: 2rem; }
+            .success-video { width: 150px; height: 150px; }
+            .link-btn { font-size: 1rem; padding: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="main-container">
-        
-        <!-- صفحة السؤال الأولى -->
-        <div id="question-page" class="w-full flex flex-col items-center">
-            
+    <div class="container" id="mainContainer">
+        <!-- السؤال الأول -->
+        <div id="questionScreen">
             <div class="typewriter-container">
-                <div class="typewriter-text" id="typing-text"></div>
-                <div class="typewriter-sub" id="typing-sub">TAIF</div>
+                <div class="typewriter">مكتبة طيف</div>
             </div>
+            <h1>جاهز تطبع معانا؟ 😉</h1>
             
-            <p class="question-text" id="main-question">جاهز تطبع معانا؟ 😉</p>
-            
-            <div class="buttons-container" id="btns-container">
-                <button id="yes-btn">أكيد</button>
-                <button id="no-btn">هفكر</button>
+            <div class="buttons">
+                <button class="btn-yes" onclick="showSuccess()">أكيد</button>
+                <button class="btn-no" id="noBtn">هفكر</button>
             </div>
         </div>
 
-        <!-- صفحة النجاح واللينكات -->
-        <div id="success-page">
-            <img src="https://media.giphy.com/media/l41lUjUgLLwWrz20w/giphy.gif" alt="Success" class="success-image">
-            <h2 class="text-2xl font-bold text-white mb-2">أحلى قرار أخدته النهاردة!</h2>
+        <!-- صفحة النجاح (الجروبات والوصف) -->
+        <div class="success-screen" id="successScreen">
+            <!-- تم إضافة الفيديو هنا -->
+            <video class="success-video" autoplay loop muted playsinline>
+                <source src="dance.mp4" type="video/mp4">
+            </video>
             
-            <!-- زرار الوصف (Accordion) -->
-            <div class="w-full mb-4 mt-2">
-                <button id="desc-btn" class="w-full flex justify-between items-center bg-slate-800 text-white p-3 rounded-xl border border-slate-600 hover:bg-slate-700 transition-colors shadow-sm">
-                    <span class="font-bold text-md text-purple-300">الوصف 📋</span>
-                    <svg id="desc-icon" class="w-5 h-5 transition-transform duration-300 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
-                <div id="desc-content" class="hidden bg-slate-800/80 mt-2 p-4 rounded-xl border border-slate-700 text-sm text-right text-gray-200 leading-relaxed shadow-inner">
-                    <p class="text-purple-400 font-bold mb-2 text-lg">متاح:</p>
-                    <ul class="list-none space-y-1 mb-1 pr-2">
-                        <li>✅ [طباعة اوراق]</li>
-                        <li>✅ [طباعة محاضرات وسكاشن]</li>
-                        <li>✅ [طباعة كُتب]</li>
-                    </ul>
-                    <p class="text-gray-400 text-xs mb-3">(طباعة المحاضرات عاديه او تكعيب)</p>
+            <h2>أحلى قرار أخدته النهاردة!</h2>
+
+            <div class="desc-accordion">
+                <button class="accordion-btn" onclick="toggleAccordion()">الوصف 📋</button>
+                <div class="accordion-content" id="descContent">
+                    <p>متاح:
+                    • طباعة أوراق
+                    • طباعة محاضرات وسكاشن
+                    • طباعة كُتب
+                    (طباعة المحاضرات عادية أو تكعيب)
                     
-                    <div class="h-px bg-slate-700 w-full my-3"></div>
+                    ✨ مع توفر خصم في حالة طباعة كمية كتب أو مذكرات.
                     
-                    <p class="text-green-400 font-bold mb-1">💸 مع توفر جمله في حاله طباعه كميه كتب او مذكرات</p>
-                    <p class="mb-4">✨ جوده عاليه وسعر مناسب</p>
-                    
-                    <div class="bg-purple-900/40 p-3 rounded-lg border border-purple-500/30 text-center">
-                        <p class="font-bold text-white mb-1">⏰ استلام الطلبات حتى الساعة 12 مساءً</p>
-                        <p class="font-bold text-purple-200">📍 والاستلام تاني يوم أمام الجامعة 💜</p>
-                    </div>
+                    ✅ جودة عالية وسعر مناسب.
+                    ⏳ استلام الطلبات حتى الساعة 12 مساءً.
+                    📍 والاستلام تاني يوم أمام الجامعة 💜</p>
                 </div>
             </div>
-
-            <p class="text-gray-400 mb-4 text-sm font-bold">انضم للجروب المناسب ليك:</p>
             
             <div class="links-container">
-                <a href="https://chat.whatsapp.com/Lf6wNBW8E6AEv5LF1h6aYD?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="channel-link">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                      <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                    </svg>
-                    جروب تمريض (Level 1)
+                <a href="https://chat.whatsapp.com/Lf6wNBW8E6AEv5LF1h6aYD?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="link-btn">
+                    جروب تمريض LEVEL 1 <span class="whatsapp-icon">💬</span>
                 </a>
-                <a href="https://chat.whatsapp.com/BxN8wJLvr3kBw8TpRr3Vzc?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="channel-link">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                      <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                    </svg>
-                    جروب تمريض (Level 2)
+                <a href="https://chat.whatsapp.com/BxN8wJLvr3kBw8TpRr3Vzc?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="link-btn">
+                    جروب تمريض LEVEL 2 <span class="whatsapp-icon">💬</span>
                 </a>
-                <a href="https://chat.whatsapp.com/EwZfUPc6rPs0hQsWLEGXzo?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="channel-link">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                      <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                    </svg>
-                    الجروب العام (لباقي التخصصات والمستويات)
+                <a href="https://chat.whatsapp.com/EwZfUPc6rPs0hQsWLEGXzo?s=cl&p=a&mlu=4&ilr=4" target="_blank" class="link-btn">
+                    الجروب العام (لباقي التخصصات والمستويات) <span class="whatsapp-icon">💬</span>
                 </a>
-                
-                <div class="h-px bg-slate-700/50 w-full my-1"></div>
-                
-                <a href="https://wa.me/201006006560" target="_blank" class="channel-link contact-link" style="border-color: rgba(139, 92, 246, 0.4);">
-                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                      <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
-                    </svg>
-                    للتواصل: 01006006560
+                <a href="https://wa.me/201006006560" target="_blank" class="link-btn contact-btn">
+                    للتواصل: 01006006560 <span class="whatsapp-icon">📞</span>
                 </a>
             </div>
         </div>
-
     </div>
 
     <script>
-        const noBtn = document.getElementById('no-btn');
-        const yesBtn = document.getElementById('yes-btn');
-        const questionPage = document.getElementById('question-page');
-        const successPage = document.getElementById('success-page');
-        
-        const typingText = document.getElementById('typing-text');
-        const typingSub = document.getElementById('typing-sub');
-        const mainQuestion = document.getElementById('main-question');
-        const btnsContainer = document.getElementById('btns-container');
+        const noBtn = document.getElementById('noBtn');
+        const container = document.getElementById('mainContainer');
 
-        const descBtn = document.getElementById('desc-btn');
-        const descContent = document.getElementById('desc-content');
-        const descIcon = document.getElementById('desc-icon');
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', moveButton); // للموبايل
 
-        const textToType = "مكتبة طيف";
-        
-        function startTypingAnimation() {
-            typingText.innerHTML = ""; 
-            typingText.style.width = "auto"; 
-            let i = 0;
+        function moveButton() {
+            noBtn.style.position = 'absolute';
             
-            function typeChar() {
-                if (i < textToType.length) {
-                    typingText.innerHTML += textToType.charAt(i);
-                    i++;
-                    setTimeout(typeChar, 150); 
-                } else {
-                    setTimeout(() => {
-                        typingText.style.borderLeft = "none";
-                        revealUI();
-                    }, 500);
-                }
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            // منطقة آمنة لمنع الزرار من الخروج
+            const safePadding = 25; 
+            
+            const maxX = containerRect.width - btnRect.width - safePadding;
+            const maxY = containerRect.height - btnRect.height - safePadding;
+
+            const randomX = Math.max(safePadding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(safePadding, Math.floor(Math.random() * maxY));
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        function showSuccess() {
+            document.getElementById('questionScreen').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'flex';
+        }
+
+        function toggleAccordion() {
+            const content = document.getElementById('descContent');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
             }
-            
-            typeChar();
         }
-
-        function revealUI() {
-            typingSub.classList.add('show-element');
-            
-            setTimeout(() => {
-                mainQuestion.classList.add('show-element');
-            }, 600);
-
-            setTimeout(() => {
-                btnsContainer.classList.add('show');
-            }, 1200);
-        }
-
-        window.onload = () => {
-            setTimeout(startTypingAnimation, 500);
-        };
-
-        function escapeMouse() {
-            const container = document.getElementById('main-container');
-            
-            if (noBtn.style.position !== 'absolute') {
-                noBtn.style.width = noBtn.offsetWidth + 'px';
-                noBtn.style.height = noBtn.offsetHeight + 'px';
-                noBtn.style.position = 'absolute';
-            }
-            
-            const safePadding = 25;
-            const maxX = container.clientWidth - noBtn.offsetWidth - safePadding;
-            const maxY = container.clientHeight - noBtn.offsetHeight - safePadding;
-            
-            const randomX = Math.floor(Math.random() * (maxX - safePadding)) + safePadding;
-            const randomY = Math.floor(Math.random() * (maxY - safePadding)) + safePadding;
-            
-            noBtn.style.left = `${randomX}px`;
-            noBtn.style.top = `${randomY}px`;
-        }
-
-        noBtn.addEventListener('mouseover', escapeMouse);
-        
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); 
-            escapeMouse();
-        });
-
-        yesBtn.addEventListener('click', () => {
-            questionPage.style.display = 'none';
-            successPage.style.display = 'flex';
-            
-            noBtn.style.display = 'none'; 
-        });
-
-        descBtn.addEventListener('click', () => {
-            descContent.classList.toggle('hidden');
-            descIcon.classList.toggle('rotate-180');
-        });
-
     </script>
 </body>
 </html>
-```
